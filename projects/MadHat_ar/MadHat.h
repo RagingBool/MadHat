@@ -1,4 +1,7 @@
+#pragma once
+
 #include "LedStrip.h"
+#include "Light.h"
 
 class MadHat {
 public:
@@ -9,5 +12,9 @@ public:
 
 private:
     LedStrip _ledStrip;
+    Light* _pHeadLight;
+    Light* _pEyesLight;
+    float _headHue;
+    float _eyesHue;
 };
 

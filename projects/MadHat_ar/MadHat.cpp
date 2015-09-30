@@ -3,23 +3,29 @@
 #include <Arduino.h>
 #include <FastLED.h>
 
-#define NUM_LEDS 7
-
-CRGB leds[NUM_LEDS];
-
 void MadHat::init() {
     delay(2000);
     _ledStrip.init(7);
+    Light testLight(_ledStrip, 1);
+
+    int headLeds[] = { 0, 1, 2 };
+    _pHeadLight = new Light(_ledStrip, headLeds, 3);
+    int eyesLeds[] = { 3, 4, 5, 6 };
+    _pEyesLight = new Light(_ledStrip, eyesLeds, 4);
+    
+    _headHue = 0.f;
+    _eyesHue = 0.f;
 }
 
 void MadHat::update() {
-    for(int i = 0; i < _ledStrip.getLength(); i++) {
-        _ledStrip[i] = CRGB::White;
-        _ledStrip.sendFrame();
+    _pHeadLight -> setHsi(_headHue, .7f, 1.f);
+    _pEyesLight -> setHsi(_eyesHue, 1.f, .6f);
 
-        delay(80);
+    _headHue += 0.005f;
+    _eyesHue += 0.015f;
 
-        _ledStrip[i] = CRGB::Black;
-    }
+    _ledStrip.sendFrame();
+
+    delay(20);
 }
 
