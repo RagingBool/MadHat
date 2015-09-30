@@ -4,23 +4,22 @@
 #include <FastLED.h>
 
 #define NUM_LEDS 7
-#define DATA_PIN 3
 
 CRGB leds[NUM_LEDS];
 
 void MadHat::init() {
     delay(2000);
-    FastLED.addLeds<WS2811, DATA_PIN, RGB>(leds, NUM_LEDS);
+    _ledStrip.init(7);
 }
 
 void MadHat::update() {
-    for(int whiteLed = 0; whiteLed < NUM_LEDS; whiteLed = whiteLed + 1) {
-        leds[whiteLed] = CRGB::Black;
-        FastLED.show();
+    for(int i = 0; i < _ledStrip.getLength(); i++) {
+        _ledStrip[i] = CRGB::White;
+        _ledStrip.sendFrame();
 
         delay(80);
 
-        leds[whiteLed] = CRGB::White;
+        _ledStrip[i] = CRGB::Black;
     }
 }
 
