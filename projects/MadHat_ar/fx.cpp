@@ -128,8 +128,14 @@ CrazyLightsFx::CrazyLightsFx(Light* pLight, float saturation, float intensity) :
     _pLight(pLight),
     _saturation(saturation),
     _intensity(intensity) {
+
+    _pHues = new float[_pLight -> getLength()];
   
     reset();
+}
+
+CrazyLightsFx::~CrazyLightsFx() {
+    delete[] _pHues;
 }
 
 void CrazyLightsFx::reset() {
@@ -147,12 +153,17 @@ void CrazyLightsFx::update(int dt_millis) {
 }
 
 void CrazyLightsFx::nextStep() {
-    _hue = random(1000) / 1000.f;
+    for(int i = 0; i < _pLight -> getLength(); i++) {
+        _pHues[i] = random(1000) / 1000.f;        
+    }
+    
     _stepLength = random(50, 150);
 }
 
 void CrazyLightsFx::render() {
-    _pLight -> setHsi(_hue, _saturation, _intensity);
+    for(int i = 0; i < _pLight -> getLength(); i++) {
+        _pLight -> setHsi(i, _pHues[i], _saturation, _intensity);        
+    }
 }
 
 ChasingLightsFx::ChasingLightsFx(Light* pLight, int stepLength, int minLights, int maxLights, float saturation, float intensity) :

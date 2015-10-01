@@ -77,6 +77,7 @@ private:
 class CrazyLightsFx : public IFx {
 public:
     CrazyLightsFx(Light* pLight, float saturation, float intensity);
+    virtual ~CrazyLightsFx();
 
     virtual void reset();
     virtual void update(int dt_millis);
@@ -90,10 +91,9 @@ private:
     float _saturation;
     float _intensity;
 
+    float* _pHues;
     int _stepTime;
     int _stepLength;
-    
-    float _hue;
 };
 
 class ChasingLightsFx : public IFx {
