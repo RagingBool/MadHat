@@ -96,3 +96,27 @@ private:
     float _hue;
 };
 
+class ChasingLightsFx : public IFx {
+public:
+    ChasingLightsFx(Light* pLight, int stepLength, int minLights, int maxLights, float saturation, float intensity);
+    virtual ~ChasingLightsFx();
+
+    virtual void reset();
+    virtual void poke();
+    virtual void update(int dt_millis);
+    virtual void render();
+
+private:
+    Light* _pLight;
+
+    int _stepLength;
+    int _minLights;
+    int _maxLights;
+    float _saturation;
+    float _intensity;
+
+    float* _pHues;
+    int _stepTime;
+    int _numLights;
+    int _phase;
+};

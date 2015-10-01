@@ -154,3 +154,53 @@ void CrazyLightsFx::nextStep() {
 void CrazyLightsFx::render() {
     _pLight -> setHsi(_hue, _saturation, _intensity);
 }
+
+ChasingLightsFx::ChasingLightsFx(Light* pLight, int stepLength, int minLights, int maxLights, float saturation, float intensity) :
+    _pLight(pLight),
+    _stepLength(stepLength),
+    _minLights(minLights),
+    _maxLights(maxLights),
+    _saturation(saturation),
+    _intensity(intensity) {
+
+    _pHues = new float[_maxLights];
+    
+    reset();
+}
+
+ChasingLightsFx::~ChasingLightsFx() {
+    delete[] _pHues;
+}
+
+void ChasingLightsFx::reset() {
+    poke();
+    _phase = 0;
+    _stepTime = 0;
+}
+
+void ChasingLightsFx::poke() {
+    for(int i = 0; i < _maxLights; i++) {
+      _pHues[i] = random(1000) / 1000.f;        
+    }
+    
+    _numLights = random(_minLights, _maxLights + 1);
+}
+
+void ChasingLightsFx::update(int dt_millis) {
+    _stepTime += dt_millis;
+
+    if(_stepTime >= _stepLength) {
+        _stepTime -= _stepLength;
+        _phase = (_phase + 1) % _pLight -> getLength();
+    }
+}
+
+void ChasingLightsFx::render() {
+    _pLight -> setRgb(0, 0, 0);
+
+    int stripLength = _pLight -> getLength();
+    for(int i = 0; i < _numLights; i++) {
+        int lightIndex = (_phase + ((i * stripLength) / _numLights)) % stripLength;
+        _pLight -> setHsi(lightIndex, _pHues[i], _saturation, _intensity);        
+    }
+}
