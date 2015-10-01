@@ -12,6 +12,10 @@ public:
     void update();
 
 private:
+    void initHeadFx();
+    void initEyesFx();
+
+private:
     int _lastTime;
 
     LedStrip _ledStrip;
