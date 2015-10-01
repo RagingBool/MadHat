@@ -16,17 +16,10 @@ Light::~Light() {
 }
 
 void Light::setRgb(uint8_t red, uint8_t green, uint8_t blue) {
-    if(_singleLedIndex >= 0) {
-        _ledStrip[_singleLedIndex].red = red;
-        _ledStrip[_singleLedIndex].green = green;
-        _ledStrip[_singleLedIndex].blue = blue;
-    } else {
-        for(int i = 0; i < _numOfIndices; i++) {
-            int index = _pIndices[i];
-            _ledStrip[index].red = red;
-            _ledStrip[index].green = green;
-            _ledStrip[index].blue = blue;
-        }
+    int length = getLength();
+  
+    for(int i = 0; i < length; i++) {
+        setRgb(i, red, green, blue);
     }
 }
 
@@ -35,6 +28,26 @@ void Light::setHsi(float hue, float saturation, float intensity) {
 
     hsi2rgb(hue, saturation, intensity, r, g, b);
     setRgb(r, g, b);
+}
+
+void Light::setRgb(int index, uint8_t red, uint8_t green, uint8_t blue) {
+    if(_singleLedIndex >= 0) {
+        _ledStrip[_singleLedIndex].red = red;
+        _ledStrip[_singleLedIndex].green = green;
+        _ledStrip[_singleLedIndex].blue = blue;
+    } else {
+      int ledStripIndex = _pIndices[index];
+      _ledStrip[ledStripIndex].red = red;
+      _ledStrip[ledStripIndex].green = green;
+      _ledStrip[ledStripIndex].blue = blue;
+    }
+}
+
+void Light::setHsi(int index, float hue, float saturation, float intensity) {
+    uint8_t r, g, b;
+
+    hsi2rgb(hue, saturation, intensity, r, g, b);
+    setRgb(index, r, g, b);
 }
 
 // Based on http://blog.saikoled.com/post/43693602826/why-every-led-light-should-be-using-hsi
