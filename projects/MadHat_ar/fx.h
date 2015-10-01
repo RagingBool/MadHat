@@ -13,6 +13,33 @@ public:
     virtual void render() = 0;
 };
 
+class InterruptingFx : public IFx {
+public:
+    InterruptingFx(IFx* pMainFx, IFx* pSecondary, int minMainTime, int maxMainTime, int minSecondaryTime, int maxSecondaryTime);
+
+    virtual void reset();
+    virtual void poke();
+    virtual void update(int dt_millis);
+    virtual void render();
+
+private:
+    void nextPhase();
+    void startMainPhase();
+    void startSecondaryPhase();
+
+private:
+    IFx* _pMainFx;
+    IFx* _pSecondary;
+    int _minMainTime;
+    int _maxMainTime;
+    int _minSecondaryTime;
+    int _maxSecondaryTime;
+
+    bool _isMainPhase;
+    int _phaseTime;
+    int _phaseLength;
+};
+
 class ColorCycleFx : public IFx {
 public:
     ColorCycleFx(Light* pLight, int period, float saturation, float intensity);

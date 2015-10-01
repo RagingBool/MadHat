@@ -3,6 +3,71 @@
 #include <math.h>
 #include <Arduino.h>
 
+InterruptingFx::InterruptingFx(IFx* pMainFx, IFx* pSecondary, int minMainTime, int maxMainTime, int minSecondaryTime, int maxSecondaryTime) :
+    _pMainFx(pMainFx),
+    _pSecondary(pSecondary),
+    _minMainTime(minMainTime),
+    _maxMainTime(maxMainTime),
+    _minSecondaryTime(minSecondaryTime),
+    _maxSecondaryTime(maxSecondaryTime) {
+
+    reset();
+}
+
+void InterruptingFx::reset() {
+   _pMainFx -> reset();
+   _pSecondary -> reset();
+
+   _phaseTime = 0;
+   startMainPhase();
+}
+
+void InterruptingFx::poke() {
+   _pMainFx -> poke();
+   _pSecondary -> poke();
+}
+
+void InterruptingFx::update(int dt_millis) {
+    _phaseTime += dt_millis;
+
+    if(_phaseTime >= _phaseLength) {
+        _phaseTime -= _phaseLength;
+
+        nextPhase();
+    }
+    
+    _pMainFx -> update(dt_millis);
+    _pSecondary -> update(dt_millis);
+}
+
+void InterruptingFx::nextPhase() {
+    if(_isMainPhase) {
+        startSecondaryPhase();
+    } else {
+        startMainPhase();
+    }
+}
+
+void InterruptingFx::startMainPhase() {
+    _phaseLength = random(_minMainTime, _maxMainTime);
+    _isMainPhase = true;
+    _pMainFx -> poke();
+}
+
+void InterruptingFx::startSecondaryPhase() {
+    _phaseLength = random(_minSecondaryTime, _maxSecondaryTime);
+    _isMainPhase = false;
+    _pSecondary -> poke();
+}
+
+void InterruptingFx::render() {
+    if(_isMainPhase) {
+        _pMainFx -> render();
+    } else {
+        _pSecondary -> render();
+    }
+}
+
 ColorCycleFx::ColorCycleFx(Light* pLight, int period, float saturation, float intensity) :
     _pLight(pLight),
     _saturation(saturation),
@@ -75,7 +140,7 @@ void CrazyLightsFx::reset() {
 void CrazyLightsFx::update(int dt_millis) {
     _stepTime += dt_millis;
 
-    if(_stepTime > _stepLength) {
+    if(_stepTime >= _stepLength) {
         _stepTime -= _stepLength;
         nextStep();
     }
