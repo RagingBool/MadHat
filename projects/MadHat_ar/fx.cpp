@@ -41,6 +41,10 @@ FadingEyesFx::FadingEyesFx(Light* pLight, int period, float saturation, float ma
 
 void FadingEyesFx::reset() {
     _fadeLfo.reset();
+    poke();
+}
+
+void FadingEyesFx::poke() {
     _hue = random(1000) / 1000.f;
 }
 

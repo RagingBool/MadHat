@@ -8,6 +8,7 @@ public:
     virtual ~IFx() { }
 
     virtual void reset() = 0;
+    virtual void poke() { }
     virtual void update(int dt_millis) = 0;
     virtual void render() = 0;
 };
@@ -33,6 +34,7 @@ public:
     FadingEyesFx(Light* pLight, int period, float saturation, float maxIntensity);
 
     virtual void reset();
+    virtual void poke();
     virtual void update(int dt_millis);
     virtual void render();
 
