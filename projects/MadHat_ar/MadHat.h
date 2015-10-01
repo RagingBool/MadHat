@@ -2,7 +2,7 @@
 
 #include "LedStrip.h"
 #include "Light.h"
-#include "signal.h"
+#include "fx.h"
 
 class MadHat {
 public:
@@ -18,7 +18,7 @@ private:
     Light* _pHeadLight;
     Light* _pEyesLight;
 
-    Lfo _headLfo;
-    Lfo _eyesLfo;
+    IFx* _pHeadFx;
+    IFx* _pEyesFx;
 };
 
