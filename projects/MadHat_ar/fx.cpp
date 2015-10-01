@@ -20,6 +20,9 @@ void ColorCycleFx::reset() {
 
 void ColorCycleFx::update(int dt_millis) {
     _hueLfo.update(dt_millis);
+}
+
+void ColorCycleFx::render() {
     _pLight -> setHsi(_hueLfo.getOutput() / 255.0, _saturation, _intensity);
 }
 
@@ -43,7 +46,9 @@ void FadingEyesFx::reset() {
 
 void FadingEyesFx::update(int dt_millis) {
     _fadeLfo.update(dt_millis);
+}
 
+void FadingEyesFx::render() {
     float intensity = pow(_fadeLfo.getOutput() / 255.0, 3.f);
     intensity = (intensity > .15f) ? intensity : 0.f;
     

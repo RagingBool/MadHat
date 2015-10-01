@@ -9,6 +9,7 @@ public:
 
     virtual void reset() = 0;
     virtual void update(int dt_millis) = 0;
+    virtual void render() = 0;
 };
 
 class ColorCycleFx : public IFx {
@@ -17,6 +18,7 @@ public:
     
     virtual void reset();
     virtual void update(int dt_millis);
+    virtual void render();
 
 private:
     Light* _pLight;
@@ -32,6 +34,7 @@ public:
 
     virtual void reset();
     virtual void update(int dt_millis);
+    virtual void render();
 
 private:
     Light* _pLight;

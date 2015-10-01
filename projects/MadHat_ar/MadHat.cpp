@@ -33,6 +33,8 @@ void MadHat::update() {
     _pHeadFx -> update(dt);
     _pEyesFx -> update(dt);
 
+    _pHeadFx -> render();
+    _pEyesFx -> render();
     _ledStrip.sendFrame();
 
     delay(15);
