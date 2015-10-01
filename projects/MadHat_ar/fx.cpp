@@ -55,3 +55,33 @@ void FadingEyesFx::render() {
     _pLight -> setHsi(_hue, _saturation, intensity * _maxIntensity);
 }
 
+CrazyLightsFx::CrazyLightsFx(Light* pLight, float saturation, float intensity) :
+    _pLight(pLight),
+    _saturation(saturation),
+    _intensity(intensity) {
+  
+    reset();
+}
+
+void CrazyLightsFx::reset() {
+    _stepTime = 0;
+    nextStep();
+}
+
+void CrazyLightsFx::update(int dt_millis) {
+    _stepTime += dt_millis;
+
+    if(_stepTime > _stepLength) {
+        _stepTime -= _stepLength;
+        nextStep();
+    }
+}
+
+void CrazyLightsFx::nextStep() {
+    _hue = random(1000) / 1000.f;
+    _stepLength = random(50, 150);
+}
+
+void CrazyLightsFx::render() {
+    _pLight -> setHsi(_hue, _saturation, _intensity);
+}

@@ -45,3 +45,25 @@ private:
     Lfo _fadeLfo;
 };
 
+class CrazyLightsFx : public IFx {
+public:
+    CrazyLightsFx(Light* pLight, float saturation, float intensity);
+
+    virtual void reset();
+    virtual void update(int dt_millis);
+    virtual void render();
+
+private:
+    void nextStep();
+
+private:
+    Light* _pLight;
+    float _saturation;
+    float _intensity;
+
+    int _stepTime;
+    int _stepLength;
+    
+    float _hue;
+};
+
