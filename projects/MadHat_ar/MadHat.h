@@ -2,6 +2,7 @@
 
 #include "LedStrip.h"
 #include "Light.h"
+#include "signal.h"
 
 class MadHat {
 public:
@@ -11,10 +12,13 @@ public:
     void update();
 
 private:
+    int _lastTime;
+
     LedStrip _ledStrip;
     Light* _pHeadLight;
     Light* _pEyesLight;
-    float _headHue;
-    float _eyesHue;
+
+    Lfo _headLfo;
+    Lfo _eyesLfo;
 };
 
