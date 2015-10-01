@@ -26,3 +26,19 @@ private:
     Lfo _hueLfo;
 };
 
+class FadingEyesFx : public IFx {
+public:
+    FadingEyesFx(Light* pLight, int period, float saturation, float maxIntensity);
+
+    virtual void reset();
+    virtual void update(int dt_millis);
+
+private:
+    Light* _pLight;
+    float _saturation;
+    float _maxIntensity;
+    
+    float _hue;
+    Lfo _fadeLfo;
+};
+
