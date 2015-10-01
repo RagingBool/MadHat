@@ -5,6 +5,7 @@
 MadHat madHat;
 
 void setup() {
+    randomSeed(analogRead(0));
     madHat.init(); 
 }
 
