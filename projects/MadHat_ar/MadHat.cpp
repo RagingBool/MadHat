@@ -38,15 +38,41 @@ void MadHat::initLeds() {
 }
 
 void MadHat::initMainFx() {
-    IFx* pCrazyColors = new CrazyLightsFx(_pMainLight, 1.f, 0.7f);
+    float lowIntensity = 0.4f;
+    float normalIntensity = 0.6f;
+    float highIntensity = 1.f;
+    float normalSaturation = 0.7f;
+    float highSaturation = 1.0f;
+    int maxChasingLights;
+    int maxChasingLightsSwarm;
+    
+    switch(_device) {
+        case MAD_HAT: {
+            maxChasingLights = 3;
+            maxChasingLightsSwarm = 5;
+        } break;
+        case GOBLIN: {
+            maxChasingLights = 2;
+            maxChasingLightsSwarm = 4;
+        } break;
+        case DISCO_JACKET: {
+            lowIntensity = 0.3f;
+            normalIntensity = 0.5f;
+            maxChasingLights = 4;
+            maxChasingLightsSwarm = 7;
+        } break;
+    }
 
+    // Populate main effects
     IFx** ppMainFxs = new IFx*[20];
     int numMainFx = 0;
-    ppMainFxs[numMainFx++] = new ColorCycleFx(_pMainLight, 1000, .7f, 0.7f);
-    ppMainFxs[numMainFx++] = new ChasingLightsFx(_pMainLight, 100, 1, 4, 1.f, 1.f);
-    ppMainFxs[numMainFx++] = new ChasingLightsFx(_pMainLight, 350, 5, 8, .7f, .5f);
+    ppMainFxs[numMainFx++] = new ColorCycleFx(_pMainLight, 1000, normalSaturation, lowIntensity);
+    ppMainFxs[numMainFx++] = new ChasingLightsFx(_pMainLight, 100, 1, maxChasingLights, highSaturation, highIntensity);
+    ppMainFxs[numMainFx++] = new ChasingLightsFx(_pMainLight, 350, maxChasingLights + 1, maxChasingLightsSwarm, normalSaturation, normalIntensity);
     IFx* pSwtichingFx = new SwitchingFx(ppMainFxs, numMainFx, 5000, 10000);
 
+    // Create the top-level effects
+    IFx* pCrazyColors = new CrazyLightsFx(_pMainLight, highSaturation, normalIntensity);
     _pMainFx = new InterruptingFx(pSwtichingFx, pCrazyColors, 10000, 20000, 1000, 2000);
 }
 
