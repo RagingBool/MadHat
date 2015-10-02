@@ -12,17 +12,17 @@ public:
     void update();
 
 private:
-    void initHeadFx();
+    void initMainFx();
     void initEyesFx();
 
 private:
     int _lastTime;
 
     LedStrip _ledStrip;
-    Light* _pHeadLight;
+    Light* _pMainLight;
     Light* _pEyesLight;
 
-    IFx* _pHeadFx;
+    IFx* _pMainFx;
     IFx* _pEyesFx;
 };
 
