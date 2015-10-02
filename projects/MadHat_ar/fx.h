@@ -13,6 +13,29 @@ public:
     virtual void render() = 0;
 };
 
+class SwitchingFx : public IFx {
+public:
+    SwitchingFx(IFx** ppFxs, int numFxs, int minTransitionTime, int maxTransitionTime);
+
+    virtual void reset();
+    virtual void poke();
+    virtual void update(int dt_millis);
+    virtual void render();
+
+private:
+    void switchFx();
+
+private:
+    IFx** _ppFxs;
+    int _numFxs;
+    int _minTransitionTime;
+    int _maxTransitionTime;
+
+    IFx* _pCurFx;
+    int _phaseTime;
+    int _phaseLength;
+};
+
 class InterruptingFx : public IFx {
 public:
     InterruptingFx(IFx* pMainFx, IFx* pSecondary, int minMainTime, int maxMainTime, int minSecondaryTime, int maxSecondaryTime);

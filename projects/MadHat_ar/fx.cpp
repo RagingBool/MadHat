@@ -3,6 +3,54 @@
 #include <math.h>
 #include <Arduino.h>
 
+SwitchingFx::SwitchingFx(IFx** ppFxs, int numFxs, int minTransitionTime, int maxTransitionTime) :
+    _ppFxs(ppFxs),
+    _numFxs(numFxs),
+    _minTransitionTime(minTransitionTime),
+    _maxTransitionTime(maxTransitionTime) {
+
+    reset();
+}
+
+void SwitchingFx::reset() {
+    for(int i = 0; i < _numFxs; i++) {
+        _ppFxs[i] -> reset();        
+    }
+
+   _phaseTime = 0;
+   switchFx();
+}
+
+void SwitchingFx::poke() {
+    for(int i = 0; i < _numFxs; i++) {
+        _ppFxs[i] -> poke();        
+    }
+}
+
+void SwitchingFx::update(int dt_millis) {
+    for(int i = 0; i < _numFxs; i++) {
+        _ppFxs[i] -> update(dt_millis);        
+    }
+  
+    _phaseTime += dt_millis;
+
+    if(_phaseTime >= _phaseLength) {
+        _phaseTime -= _phaseLength;
+
+        switchFx();
+    }
+}
+
+void SwitchingFx::switchFx() {
+    _pCurFx = _ppFxs[random(_numFxs)];
+    _pCurFx -> poke();
+    _phaseLength = random(_minTransitionTime, _maxTransitionTime);
+}
+
+void SwitchingFx::render() {
+    _pCurFx -> render();
+}
+
 InterruptingFx::InterruptingFx(IFx* pMainFx, IFx* pSecondary, int minMainTime, int maxMainTime, int minSecondaryTime, int maxSecondaryTime) :
     _pMainFx(pMainFx),
     _pSecondary(pSecondary),
