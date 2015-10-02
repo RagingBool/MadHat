@@ -8,30 +8,33 @@ void MadHat::init() {
     _ledStrip.init(14);
     Light testLight(_ledStrip, 1);
 
-    
-    int mainLeds[] = { 0, 1, 2, 4, 3, 5 };
-    _pMainLight = new Light(_ledStrip, mainLeds, 6);
-    int eyesLeds[] = { 6, 7, 8, 9 };
-    _pEyesLight = new Light(_ledStrip, eyesLeds, 4);
-    
-
-    /*
-    int mainLeds[] = { 0, 1, 2, 3, 5, 7, 8, 9 };
-    _pMainLight = new Light(_ledStrip, mainLeds, 8);
-    int eyesLeds[] = { 4, 6 };
-    _pEyesLight = new Light(_ledStrip, eyesLeds, 2);
-    */
-
-    /*
-    int mainLeds[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
-    _pMainLight = new Light(_ledStrip, mainLeds, 14);
-    _pEyesLight = new Light(_ledStrip, 0, 0);
-    */
-    
+    initLeds();
     initMainFx();
     initEyesFx();
 
     _lastTime = millis();
+}
+
+void MadHat::initLeds() {
+    switch(_device) {
+        case MAD_HAT: {
+            int mainLeds[] = { 0, 1, 2, 3, 5, 7, 8, 9 };
+            _pMainLight = new Light(_ledStrip, mainLeds, 8);
+            int eyesLeds[] = { 4, 6 };
+            _pEyesLight = new Light(_ledStrip, eyesLeds, 2);
+        } break;
+        case GOBLIN: {
+            int mainLeds[] = { 0, 1, 2, 4, 3, 5 };
+            _pMainLight = new Light(_ledStrip, mainLeds, 6);
+            int eyesLeds[] = { 6, 7, 8, 9 };
+            _pEyesLight = new Light(_ledStrip, eyesLeds, 4);
+        } break;
+        case DISCO_JACKET: {
+            int mainLeds[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+            _pMainLight = new Light(_ledStrip, mainLeds, 14);
+            _pEyesLight = new Light(_ledStrip, 0, 0);
+        } break;
+    }
 }
 
 void MadHat::initMainFx() {

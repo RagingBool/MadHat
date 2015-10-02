@@ -2,7 +2,7 @@
 
 #include "MadHat.h"
 
-MadHat madHat;
+MadHat madHat(MadHat::MAD_HAT);
 
 void setup() {
     randomSeed(analogRead(0));
