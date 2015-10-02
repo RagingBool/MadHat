@@ -37,11 +37,12 @@ void MadHat::init() {
 void MadHat::initMainFx() {
     IFx* pCrazyColors = new CrazyLightsFx(_pMainLight, 1.f, 0.7f);
 
-    IFx** ppMainFxs = new IFx*[3];
-    ppMainFxs[0] = new ColorCycleFx(_pMainLight, 1000, .7f, 0.7f);
-    ppMainFxs[1] = new ChasingLightsFx(_pMainLight, 100, 1, 4, 1.f, 1.f);
-    ppMainFxs[2] = new ChasingLightsFx(_pMainLight, 350, 5, 8, .7f, .5f);
-    IFx* pSwtichingFx = new SwitchingFx(ppMainFxs, 3, 5000, 10000);
+    IFx** ppMainFxs = new IFx*[20];
+    int numMainFx = 0;
+    ppMainFxs[numMainFx++] = new ColorCycleFx(_pMainLight, 1000, .7f, 0.7f);
+    ppMainFxs[numMainFx++] = new ChasingLightsFx(_pMainLight, 100, 1, 4, 1.f, 1.f);
+    ppMainFxs[numMainFx++] = new ChasingLightsFx(_pMainLight, 350, 5, 8, .7f, .5f);
+    IFx* pSwtichingFx = new SwitchingFx(ppMainFxs, numMainFx, 5000, 10000);
 
     _pMainFx = new InterruptingFx(pSwtichingFx, pCrazyColors, 10000, 20000, 1000, 2000);
 }
