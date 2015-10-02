@@ -9,7 +9,7 @@ void MadHat::init() {
     Light testLight(_ledStrip, 1);
 
     
-    int mainLeds[] = { 0, 1, 2, 3, 4, 5 };
+    int mainLeds[] = { 0, 1, 2, 4, 3, 5 };
     _pMainLight = new Light(_ledStrip, mainLeds, 6);
     int eyesLeds[] = { 6, 7, 8, 9 };
     _pEyesLight = new Light(_ledStrip, eyesLeds, 4);
